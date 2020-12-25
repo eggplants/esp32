@@ -1,6 +1,7 @@
 # What is this
 
 - handle esp32 with [micropython](https://github.com/micropython/micropython)
+- with [arduino ide]()
 
 ## First
 
@@ -13,6 +14,9 @@ $ ./allow_dev.sh
 - ESP32 MicroPython documentation
   - ja: <https://micropython-docs-ja.readthedocs.io/ja/latest/esp32/quickref.html>
 
+- The reference of Arduino ESP32
+  - ja: <https://garretlab.web.fc2.com/arduino/esp32/reference>
+
 ## Useful commands
 
 ### ampy
@@ -20,7 +24,7 @@ $ ./allow_dev.sh
 - write/read file
 
 ```bash
-$ sudo pip install adafruit-ampy
+$ pip install adafruit-ampy
 $ export AMPY_PORT=/dev/ttyUSB0
 $ ampy ls
 ```

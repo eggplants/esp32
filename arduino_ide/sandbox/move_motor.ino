@@ -11,34 +11,40 @@ void setup(){
 
 void loop()
 {
-    ledcWrite(0,128);
-    digitalWrite(PIN_IN1,HIGH);
-    digitalWrite(PIN_IN2,LOW);
+    change_speed(0,128);
+    forward(PIN_IN1, PIN_IN2);
     delay(5000);
 
-    digitalWrite(PIN_IN1,HIGH);
-    digitalWrite(PIN_IN2,HIGH);
+    brake(PIN_IN1, PIN_IN2);
     delay(1000);
-//    // 逆回転
-//    digitalWrite(PIN_IN1,LOW);
-//    digitalWrite(PIN_IN2,HIGH);
-//    delay(5000);
-//
-//    // ブレーキ
-//    digitalWrite(PIN_IN1,HIGH);
-//    digitalWrite(PIN_IN2,HIGH);
-//    delay(2000);
-//
-//    // モーターの回転速度を最大にする
-//    ledcWrite(0,128);
-//
-//    // 逆回転
-//    digitalWrite(PIN_IN1,LOW);
-//    digitalWrite(PIN_IN2,HIGH);
-//    delay(5000);
-//
-//    // ストップ
-//    digitalWrite(PIN_IN1,LOW);
-//    digitalWrite(PIN_IN2,LOW);
-//    delay(2000);
+}
+
+void change_speed(int channel, int speed)
+{
+    ledcWrite(channel, speed);
+}
+
+
+void stop(int in1, int in2)
+{
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+}
+
+void brake(int in1, int in2)
+{
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, HIGH);
+}
+
+void forward(int in1, int in2)
+{
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+}
+
+void backward(int in1, int in2)
+{
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, HIGH);
 }
