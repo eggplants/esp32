@@ -11,12 +11,14 @@ void setup(){
 
 void loop()
 {
-    change_speed(0,128);
+    change_speed(0,255);
     forward(PIN_IN1, PIN_IN2);
+    delay(1000);
+    change_speed(0, 180);
     delay(5000);
 
     brake(PIN_IN1, PIN_IN2);
-    delay(1000);
+    delay(5000);
 }
 
 void change_speed(int channel, int speed)
