@@ -1,31 +1,34 @@
-#define ECHO 32 // Echo Pin
-#define TRIG 33 // Trigger Pin
+#define ECHO 32
+#define TRIG 33
 
 double Duration = 0;
-double Distance = 0; //距離
+double Distance = 0;
 
 void setup()
 {
     Serial.begin(9600);
-    pinMode( ECHO, INPUT );
-    pinMode( TRIG, OUTPUT );
+    pinMode(ECHO, INPUT);
+    pinMode(TRIG, OUTPUT);
+}
+
+void sendTriggerPulse()
+{
+    digitalWrite(TRIG, LOW); 
+    delayMicroseconds(2); 
+    digitalWrite(TRIG, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(TRIG, LOW);
 }
 
 void loop()
 {
-    digitalWrite(TRIG, LOW); 
-    delayMicroseconds(2); 
-    digitalWrite( TRIG, HIGH ); //超音波を出力
-    delayMicroseconds( 10 ); //
-    digitalWrite( TRIG, LOW );
-    Duration = pulseIn( ECHO, HIGH ); //センサからの入力
+    sendTriggerPulse();
+    Duration = pulseIn(ECHO, HIGH);
     if (Duration > 0)
     {
-        Duration = Duration/2; //往復距離を半分にする
-        Distance = Duration*340*100/1000000; // 音速を340m/sに設定
-        Serial.print("Distance:");
-        Serial.print(Distance);
-        Serial.println(" cm");
+        Duration = Duration / 2;
+        Distance = Duration * 340 * 100 / 1000000;
+        Serial.printf("Distance: %f cm\n", Distance);
     }
     delay(500);
 }
