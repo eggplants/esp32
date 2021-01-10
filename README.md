@@ -1,7 +1,7 @@
 # What is this
 
 - handle esp32 with [micropython](https://github.com/micropython/micropython)
-- with [arduino ide]()
+- with [arduino ide](https://www.arduino.cc/en/software)
 
 ## First
 
@@ -62,4 +62,20 @@ $ picocom /dev/ttyUSB0 -b 115200
 ```bash
 $ sudo apt install fritzing
 $ fritzing
+```
+
+### esptool.py
+
+```bash
+$ pip install esptool
+$ esptool.py --port /dev/ttyUSB0 erase_flash
+# Micropython
+$ wget \
+    "http://micropython.org/resources/firmware/esp32-idf3-20200902-v1.13.bin"
+# Original firmware
+# Goto: https://github.com/espressif/esp-at/releases/tag/v2.1.0.0_esp32s2
+# Download: ESP32-S2-WROOM_AT_Bin_V2.1.0.0.zip
+# Copy: factory/factory_WROOM.bin
+$ esptool.py --chip esp32 --port /dev/ttyUSB0 write_flash \
+    -z 0x1000 esp32-*.bin
 ```
