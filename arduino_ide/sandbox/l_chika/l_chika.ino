@@ -1,4 +1,4 @@
-#define LED 27
+#define LED 21
 #define WAIT 500
 
 

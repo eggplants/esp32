@@ -1,5 +1,5 @@
-#define ECHO 32
-#define TRIG 33
+#define TRIG 32
+#define ECHO 33
 
 double Duration = 0;
 double Distance = 0;

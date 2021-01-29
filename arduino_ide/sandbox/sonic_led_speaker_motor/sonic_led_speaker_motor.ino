@@ -6,9 +6,12 @@
 #define TRIG 32
 #define ECHO 33
 
-#define PIN_IN1  19
-#define PIN_IN2  18
+#define BUTTON 18
+
 #define PIN_VREF_ADC A10 // PIN 4
+#define PIN_IN1 0
+#define PIN_IN2 2
+
 #define PIN_VREF_CHANNEL 1
 
 double Duration = 0;
@@ -17,10 +20,13 @@ double Distance = 0;
 void setup()
 {
     // START SERIAL COMM
-    Serial.begin(9600);
+//    Serial.begin(9600);
+    Serial.begin(115200);
+    Serial.printf("hello, \n");
 
     // LED
     pinMode(LED, OUTPUT);
+    digitalWrite(LED, HIGH);
 
     // SPEAKER
     ledcSetup(0,12000, 8);
@@ -31,7 +37,7 @@ void setup()
     pinMode(TRIG, OUTPUT);
 
     // MOTOR
-    pinMode(PIN_IN1, OUTPUT); 
+    pinMode(PIN_IN1, OUTPUT);
     pinMode(PIN_IN2, OUTPUT);
     ledcAttachPin(PIN_VREF_ADC, 1);
 }
@@ -45,13 +51,17 @@ void loop()
         Duration = Duration / 2;
         Distance = Duration * 340 * 100 / 1000000;
         Serial.printf("Distance: %f cm\n", Distance);
-        beep();
+        beep();delay(100);beep();
+    }else{
+      Serial.printf("No echo...\n");
+      beep();
     }
     changeSpeed(255);
     forward();
     delay(5000);
-    stop();
-    lChila();
+//    stop();
+    brake();
+//    lChila();
 }
 
 void beep()
