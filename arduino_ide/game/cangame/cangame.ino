@@ -36,7 +36,8 @@
 
 void setup()
 {
-  Serial.begin(9600);
+//  Serial.begin(9600);
+  Serial.begin(115200);
   // LED
   pinMode(LED, OUTPUT);
   // keep turning on
@@ -67,26 +68,56 @@ int cnt = 0;
 
 void loop()
 {
-  deepSleep();
+  deepSleepChk();
   Serial.println(measureDistCm());
-  if(isFar(10.0))
-  {
-//    tone(27.0);/
-  }else{
-//    tone(3951.0);/
-  }
-//  double dist = measureDistCm();
-//  if(dist > 0)
-//  {
-//    beep();
-//  }else{
-//    beep();delay(100);beep();
-//  }
+  Serial.println(randStartime());
+  normal(); // normal: (60~150)sec
+  star();   // star: ()sec
+  delay(100);
 }
 
 //////////
-// FUNC //
+// FUNC //Serial.println(measureDistCm());
 //////////
+
+void normal()
+{
+  for(int i=0;i<randStartime() + 30; i++)
+  {
+    deepSleepChk();
+    Serial.println(measureDistCm());
+    if(!isDark())
+    {
+      while(true)
+      {
+//        playMusic("dadadadum");
+        deepSleepChk();
+      }
+    }
+    delay(1000);
+  }
+}
+
+void star()
+{
+  for(int i=0;i<randStartime();i++)
+  {
+    forward();
+    if(!isDark())
+    {
+      while(true)
+      {
+//        playMusic/("prelude");
+      }
+    }
+  }
+  halt();
+}
+
+bool isDark() // 缶が無い状態の判定 / t: ある, f: 無い
+{
+  isFar(10.0);
+}
 
 bool isFar(double dist)
 {
@@ -94,8 +125,7 @@ bool isFar(double dist)
   if(d == -1)
   {
     return false;
-  }else if(d >= dist)
-  {
+  }else if(d >= dist){
     return true;
   }else{
     return false;
@@ -116,6 +146,11 @@ double measureDistCm()
     distance = -1.0;
   }
   return distance;
+}
+
+int randStartime()
+{
+  return 10*random(0, 9) + 30;
 }
 
 void beep()
@@ -181,7 +216,7 @@ void backward()
   digitalWrite(PIN_IN2, HIGH);
 }
 
-void deepSleep()
+void deepSleepChk()
 {
   int pushed = digitalRead(BUTTON);
   if (pushed == 1){
