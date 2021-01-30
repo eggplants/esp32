@@ -61,7 +61,7 @@ void loop()
     delay(5000);
 //    stop();
     brake();
-//    lChila();
+    delay(5000);
 }
 
 void beep()
