@@ -26,18 +26,20 @@
 // MAIN //
 //////////
 
-/* 
- *  
+/*
+ *
  * TIPS:
  * Deepsleepで残したいデータは属性`RTC_SLOW_ATTR`
  * ボタンの状態を見てDeepsleepする場合は`deepSleep()`
- * 
+ *
  */
+
+RTC_SLOW_ATTR int buttonStat = 0;
+
 
 void setup()
 {
-//  Serial.begin(9600);
-  Serial.begin(115200);
+  Serial.begin(9600);
   // LED
   pinMode(LED, OUTPUT);
   // keep turning on
@@ -53,26 +55,27 @@ void setup()
   // SONIC
   pinMode(ECHO, INPUT);
   pinMode(TRIG, OUTPUT);
-  // try 
+  // try
   sendTriggerPulse();
 
   // MOTOR
-  pinMode(PIN_IN1, OUTPUT); 
+  pinMode(PIN_IN1, OUTPUT);
   pinMode(PIN_IN2, OUTPUT);
   ledcAttachPin(PIN_VREF_ADC, PIN_VREF_CHANNEL);
   // Set speed as max
   changeSpeed(255);
+
+  // Start
+  playMusic("ba_ding");
+  buttonStat = digitalRead(BUTTON);
 }
 
 int cnt = 0;
 
 void loop()
 {
-  deepSleepChk();
-  Serial.println(measureDistCm());
-  Serial.println(randStartime());
-  normal(); // normal: (60~150)sec
-  star();   // star: ()sec
+  normal(); // normal: (60~150)sec, kicked ? p_win: p_lose
+  star();   // star: (30, 120)sec, kicked ? p_lose: p_win
   delay(100);
 }
 
@@ -85,12 +88,12 @@ void normal()
   for(int i=0;i<randStartime() + 30; i++)
   {
     deepSleepChk();
-    Serial.println(measureDistCm());
-    if(!isDark())
+    Serial.printf("%04d: %f\n", i, measureDistCm());
+    if(measureDistCm() >= 10.0)
     {
       while(true)
       {
-//        playMusic("dadadadum");
+        playMusic("prelude");
         deepSleepChk();
       }
     }
@@ -100,37 +103,22 @@ void normal()
 
 void star()
 {
+  playMusic("jump_up");
+  deepSleepChk();
   for(int i=0;i<randStartime();i++)
   {
+    deepSleepChk();
     forward();
-    if(!isDark())
+    if(measureDistCm() >= 10.0)
     {
       while(true)
       {
-//        playMusic/("prelude");
+        deepSleepChk();
+        playMusic("dadadadum");
       }
     }
   }
   halt();
-}
-
-bool isDark() // 缶が無い状態の判定 / t: ある, f: 無い
-{
-  isFar(10.0);
-}
-
-bool isFar(double dist)
-{
-  double d = measureDistCm();
-  if(d == -1)
-  {
-    return false;
-  }else if(d >= dist){
-    return true;
-  }else{
-    return false;
-  }
-  
 }
 
 double measureDistCm()
@@ -189,7 +177,7 @@ void sendTriggerPulse()
 
 void changeSpeed(int speed)
 {
-  ledcWrite(PIN_VREF_CHANNEL, speed); 
+  ledcWrite(PIN_VREF_CHANNEL, speed);
 }
 
 void halt()
@@ -216,16 +204,11 @@ void backward()
   digitalWrite(PIN_IN2, HIGH);
 }
 
-void deepSleepChk()
-{
+void deepSleepChk() {
   int pushed = digitalRead(BUTTON);
-  if (pushed == 1){
+  if (pushed != buttonStat){
     digitalWrite(LED, LOW);
-    esp_sleep_enable_ext0_wakeup(GPIO_NUM_12, (pushed==1) ? 1 : 0);
-    while (pushed == 1){
-      pushed = digitalRead(BUTTON);
-    }
-    Serial.printf("%d\n", pushed);
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_18, buttonStat);
     esp_deep_sleep_start();
   }
 }

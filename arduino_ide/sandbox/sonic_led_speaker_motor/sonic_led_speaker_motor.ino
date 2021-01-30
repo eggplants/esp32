@@ -20,8 +20,7 @@ double Distance = 0;
 void setup()
 {
     // START SERIAL COMM
-//    Serial.begin(9600);
-    Serial.begin(115200);
+    Serial.begin(9600);
     Serial.printf("hello, \n");
 
     // LED
