@@ -50,17 +50,16 @@ void loop()
         Duration = Duration / 2;
         Distance = Duration * 340 * 100 / 1000000;
         Serial.printf("Distance: %f cm\n", Distance);
-        //beep();delay(100);beep();
+        beep();delay(100);beep();
     }else{
       Serial.printf("No echo...\n");
-      //beep();
+      beep();
     }
     changeSpeed(255);
     forward();
-    delay(5000);
+    delay(1000);
     stop();
-//    brake();/
-    delay(5000);
+    delay(1000);
 }
 
 void beep()

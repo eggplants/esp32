@@ -4,6 +4,7 @@
 #define PIN_VREF_CHANNEL 1
 
 void setup(){
+    Serial.begin(9600);
     pinMode(PIN_IN1, OUTPUT);
     pinMode(PIN_IN2, OUTPUT);
     ledcAttachPin(PIN_VREF_ADC, PIN_VREF_CHANNEL);
@@ -12,6 +13,7 @@ void setup(){
 
 void loop()
 {
+   
     forward(PIN_IN1, PIN_IN2);
     delay(1000);
     changeSpeed(255);

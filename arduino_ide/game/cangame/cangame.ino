@@ -26,12 +26,9 @@
 // MAIN //
 //////////
 
-/*
- *
- * TIPS:
+/* TIPS:
  * Deepsleepで残したいデータは属性`RTC_SLOW_ATTR`
  * ボタンの状態を見てDeepsleepする場合は`deepSleep()`
- *
  */
 
 RTC_SLOW_ATTR int buttonStat = 0;
@@ -104,7 +101,7 @@ void normal()
 
 void star()
 {
-  playMusic("jump_up");
+  playMusic("power_up");
   deepSleepChk();
   forward();
   int r = randStartime();
@@ -123,7 +120,7 @@ void star()
     delay(1000);
   }
   halt();
-  playMusic("jump_down");
+  playMusic("power_down");
 }
 
 void deepSleepChk() {
