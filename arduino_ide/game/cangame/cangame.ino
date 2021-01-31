@@ -14,7 +14,7 @@
 #define ECHO 33
 
 // POWER SWITCH
-#define BUTTON 18
+#define BUTTON 26
 
 // MOTOR
 #define PIN_VREF_ADC A10 // PIN 4
@@ -85,7 +85,8 @@ void loop()
 
 void normal()
 {
-  for(int i=0;i<randStartime() + 30; i++)
+  int r = randStartime() + 30;
+  for(int i=0;i < r; i++)
   {
     deepSleepChk();
     Serial.printf("%04d: %f\n", i, measureDistCm());
@@ -105,20 +106,33 @@ void star()
 {
   playMusic("jump_up");
   deepSleepChk();
-  for(int i=0;i<randStartime();i++)
+  forward();
+  int r = randStartime();
+  for(int i=0;i < r;i++)
   {
     deepSleepChk();
-    forward();
     if(measureDistCm() >= 10.0)
     {
+      halt();
       while(true)
       {
         deepSleepChk();
         playMusic("dadadadum");
       }
     }
+    delay(1000);
   }
   halt();
+  playMusic("jump_down");
+}
+
+void deepSleepChk() {
+  int pushed = digitalRead(BUTTON);
+  if (pushed != buttonStat){
+    digitalWrite(LED, LOW);
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_26, buttonStat);
+    esp_deep_sleep_start();
+  }
 }
 
 double measureDistCm()
@@ -138,7 +152,8 @@ double measureDistCm()
 
 int randStartime()
 {
-  return 10*random(0, 9) + 30;
+  int r = random(0, 9);
+  return (10 * r) + 30;
 }
 
 void beep()
@@ -202,13 +217,4 @@ void backward()
 {
   digitalWrite(PIN_IN1, LOW);
   digitalWrite(PIN_IN2, HIGH);
-}
-
-void deepSleepChk() {
-  int pushed = digitalRead(BUTTON);
-  if (pushed != buttonStat){
-    digitalWrite(LED, LOW);
-    esp_sleep_enable_ext0_wakeup(GPIO_NUM_18, buttonStat);
-    esp_deep_sleep_start();
-  }
 }

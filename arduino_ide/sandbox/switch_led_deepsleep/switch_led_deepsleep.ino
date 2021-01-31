@@ -1,4 +1,4 @@
-#define BUTTON 12 // 18だと復帰できない
+#define BUTTON 26 // 18だと復帰できない
 #define LED 27
 
 RTC_SLOW_ATTR int bootCnt = 0;
@@ -30,7 +30,7 @@ void sleep_chk() {
   if (pushed != buttonStat){
     digitalWrite(LED, LOW);
     // GPIO_NUM_18だと復帰できない
-    esp_sleep_enable_ext0_wakeup(GPIO_NUM_12, buttonStat);
+    esp_sleep_enable_ext0_wakeup(GPIO_NUM_26, buttonStat);
     esp_deep_sleep_start();
   }
 }
