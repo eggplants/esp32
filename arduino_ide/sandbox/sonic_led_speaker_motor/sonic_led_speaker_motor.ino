@@ -39,6 +39,7 @@ void setup()
     pinMode(PIN_IN1, OUTPUT);
     pinMode(PIN_IN2, OUTPUT);
     ledcAttachPin(PIN_VREF_ADC, 1);
+    changeSpeed(255);
 }
 
 void loop()
@@ -55,11 +56,10 @@ void loop()
       Serial.printf("No echo...\n");
       beep();
     }
-    changeSpeed(255);
     forward();
-    delay(1000);
+    delay(5000);
     stop();
-    delay(1000);
+    delay(3000);
 }
 
 void beep()
